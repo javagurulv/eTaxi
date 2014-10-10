@@ -16,6 +16,14 @@
 
 
     <dependencies>
+
+        <dependency>
+            <groupId>etaxi</groupId>
+            <artifactId>etaxi-database</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+
         <!-- HSQLDB dependency - used as embedded database -->
         <dependency>
             <groupId>org.hsqldb</groupId>

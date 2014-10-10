@@ -12,6 +12,7 @@
     <modules>
         <module>etaxi-database</module>
         <module>etaxi-core</module>
+        <module>etaxi-integration-tests</module>
     </modules>
 
     <repositories>
