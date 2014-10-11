@@ -1,4 +1,4 @@
-package ua.etaxi.liquibase;
+package ua.etaxi.config.liquibase;
 
 public class DatabaseMigrationException extends RuntimeException {
 

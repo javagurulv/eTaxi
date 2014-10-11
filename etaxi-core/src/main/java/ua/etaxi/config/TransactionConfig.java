@@ -23,12 +23,4 @@ public class TransactionConfig {
         return new HibernateTransactionManager(sessionFactory);
     }
 
-	@Bean(name = "jpaTX")
-	public JpaTransactionManager jpaTransactionManager(DataSource dataSource,
-	                                                   EntityManagerFactory entityManagerFactory) {
-		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager(entityManagerFactory);
-		jpaTransactionManager.setDataSource(dataSource);
-		return jpaTransactionManager;
-	}
-
 }

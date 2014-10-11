@@ -25,10 +25,10 @@
 
     <properties>
 
-        <!-- HSQLDB dependency - used as embedded database -->
+        <!-- HSQLDB dependency - used as embedded ua.etaxi.core.database -->
         <hsqldb.version>2.3.1</hsqldb.version>
 
-        <!-- MySQL database driver -->
+        <!-- MySQL ua.etaxi.core.database driver -->
         <mysql-connector-java.version>5.1.28</mysql-connector-java.version>
 
         <!-- Database connection pool -->

@@ -1,4 +1,4 @@
-package ua.etaxi.liquibase;
+package ua.etaxi.config.liquibase;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

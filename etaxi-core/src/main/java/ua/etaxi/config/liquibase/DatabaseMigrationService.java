@@ -1,4 +1,4 @@
-package ua.etaxi.liquibase;
+package ua.etaxi.config.liquibase;
 
 import liquibase.Liquibase;
 import liquibase.database.Database;
@@ -22,7 +22,7 @@ public class DatabaseMigrationService {
 		try {
 			connection = tryUpdate(dataSource, contexts);
 		} catch (Exception e) {
-			throw new DatabaseMigrationException("Error while updating the database", e);
+			throw new DatabaseMigrationException("Error while updating the ua.etaxi.core.database", e);
 		} finally {
 			tryClose(connection);
 		}
@@ -46,7 +46,7 @@ public class DatabaseMigrationService {
 			try {
 				connection.close();
 			} catch (SQLException e) {
-				throw new DatabaseMigrationException("Error while updating the database", e);
+				throw new DatabaseMigrationException("Error while updating the ua.etaxi.core.database", e);
 			}
 		}
 	}

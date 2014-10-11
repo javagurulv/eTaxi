@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ua.etaxi.liquibase.LiquibaseSchemaUpdate;
+import ua.etaxi.config.liquibase.LiquibaseSchemaUpdate;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
@@ -22,10 +22,10 @@ public class DataSourceConfig {
 
     @Bean(destroyMethod = "close")
     public DataSource dataSource(
-            @Value("${database.driverClass}") String driver,
-            @Value("${database.jdbcUrl}") String url,
-            @Value("${database.userName}") String user,
-            @Value("${database.password}") String password) throws PropertyVetoException {
+            @Value("${ua.etaxi.core.database.driverClass}") String driver,
+            @Value("${ua.etaxi.core.database.jdbcUrl}") String url,
+            @Value("${ua.etaxi.core.database.userName}") String user,
+            @Value("${ua.etaxi.core.database.password}") String password) throws PropertyVetoException {
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(driver);
