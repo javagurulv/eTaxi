@@ -15,6 +15,13 @@
     </parent>
 
     <dependencies>
+        <!-- MySQL database driver -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+
         <!-- Testing lib dependencies -->
         <dependency>
             <groupId>junit</groupId>
@@ -23,5 +30,19 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <configuration>
+                    <propertyFile>src/main/resources/liquibase/liquibase.properties</propertyFile>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 
 </project>

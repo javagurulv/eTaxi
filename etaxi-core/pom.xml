@@ -30,12 +30,6 @@
             <artifactId>hsqldb</artifactId>
         </dependency>
 
-        <!-- MySQL database driver -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-
         <!-- Database connection pool -->
         <dependency>
             <groupId>commons-dbcp</groupId>
