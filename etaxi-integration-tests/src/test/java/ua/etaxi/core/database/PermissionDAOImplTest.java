@@ -6,12 +6,13 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import ua.etaxi.core.domain.Permission;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static ua.etaxi.core.domain.builders.PermissionBuilder.createPermission;
 
 /**
  * Created by Viktor on 11/10/2014.
@@ -24,35 +25,17 @@ public class PermissionDAOImplTest extends DatabaseIntegrationTest {
 
     @Test
     public void testCreate() {
-        doInTransaction(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                Permission permission = new Permission();
-                permission.setPermissionName("admin");
-                assertThat(permission.getPermissionId(), is(nullValue()));
-                entityRepository.create(permission);
-                assertThat(permission.getPermissionId(), is(notNullValue()));
-            }
-        });
+        savePermissionToDB("admin");
     }
 
     @Test
     public void testGetById() {
-        final AtomicLong permissionId = new AtomicLong();
+        final Permission permission = savePermissionToDB("admin");
         doInTransaction(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                Permission permission = new Permission();
-                permission.setPermissionName("admin");
-                entityRepository.create(permission);
-                permissionId.set(permission.getPermissionId());
-            }
-        });
-        doInTransaction(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                Permission permission = entityRepository.getById(Permission.class, permissionId.get());
-                assertThat(permission.getPermissionName(), is("admin"));
+                Permission permissionFromDB = entityRepository.getById(Permission.class, permission.getPermissionId());
+                assertThat(permissionFromDB.getPermissionName(), is("admin"));
             }
         });
     }
@@ -70,21 +53,12 @@ public class PermissionDAOImplTest extends DatabaseIntegrationTest {
 
     @Test
     public void testGetRequired() {
-        final AtomicLong permissionId = new AtomicLong();
+        final Permission permission = savePermissionToDB("admin");
         doInTransaction(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                Permission permission = new Permission();
-                permission.setPermissionName("admin");
-                entityRepository.create(permission);
-                permissionId.set(permission.getPermissionId());
-            }
-        });
-        doInTransaction(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                Permission permission = entityRepository.getRequired(Permission.class, permissionId.get());
-                assertThat(permission.getPermissionName(), is("admin"));
+                Permission permissionFromDB = entityRepository.getRequired(Permission.class, permission.getPermissionId());
+                assertThat(permissionFromDB.getPermissionName(), is("admin"));
             }
         });
     }
@@ -97,6 +71,59 @@ public class PermissionDAOImplTest extends DatabaseIntegrationTest {
                 entityRepository.getRequired(Permission.class, Long.MAX_VALUE);
             }
         });
+    }
+
+    @Test
+    public void testUpdate() {
+        final Permission permission = savePermissionToDB("admin");
+        doInTransaction(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                Permission permissionFromDB = entityRepository.getRequired(Permission.class, permission.getPermissionId());
+                permissionFromDB.setPermissionName("user");
+            }
+        });
+        doInTransaction(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                Permission permissionFromDB = entityRepository.getRequired(Permission.class, permission.getPermissionId());
+                assertThat(permissionFromDB.getPermissionName(), is("user"));
+            }
+        });
+    }
+
+    @Test
+    public void testDelete() {
+        final Permission permission = savePermissionToDB("admin");
+        doInTransaction(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                Permission permissionFromDB = entityRepository.getRequired(Permission.class, permission.getPermissionId());
+                entityRepository.delete(permissionFromDB);
+            }
+        });
+        doInTransaction(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                Permission permissionFromDB = entityRepository.getById(Permission.class, permission.getPermissionId());
+                assertThat(permissionFromDB, is(nullValue()));
+            }
+        });
+    }
+
+    private Permission savePermissionToDB(final String permissionName) {
+        final AtomicReference<Permission> permissionRef = new AtomicReference<>();
+        doInTransaction(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                Permission permission = createPermission().withName(permissionName).build();
+                assertThat(permission.getPermissionId(), is(nullValue()));
+                entityRepository.create(permission);
+                assertThat(permission.getPermissionId(), is(notNullValue()));
+                permissionRef.set(permission);
+            }
+        });
+        return permissionRef.get();
     }
 
 }
