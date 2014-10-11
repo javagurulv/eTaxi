@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Viktor on 11/10/2014.
  */
-public class PermissionDAOImpl extends DatabaseIntegrationTest {
+public class PermissionDAOImplTest extends DatabaseIntegrationTest {
 
     @Autowired
     private EntityRepository entityRepository;
@@ -27,6 +27,7 @@ public class PermissionDAOImpl extends DatabaseIntegrationTest {
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
                 Permission permission = new Permission();
                 permission.setPermissionName("admin");
+                assertThat(permission.getPermissionId(), is(nullValue()));
                 entityRepository.create(permission);
                 assertThat(permission.getPermissionId(), is(notNullValue()));
             }
