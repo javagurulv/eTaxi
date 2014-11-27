@@ -2,10 +2,8 @@ package ua.etaxi.core.handlers.permissions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ua.etaxi.core.commands.DomainCommand;
-import ua.etaxi.core.commands.DomainCommandResult;
-import ua.etaxi.core.commands.VoidResult;
 import ua.etaxi.core.commands.permissions.CreatePermissionCommand;
+import ua.etaxi.core.commands.permissions.CreatePermissionCommandResult;
 import ua.etaxi.core.database.EntityRepository;
 import ua.etaxi.core.domain.Permission;
 import ua.etaxi.core.handlers.DomainCommandHandler;
@@ -17,14 +15,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Component
 public class CreatePermissionCommandHandler
-        implements DomainCommandHandler<CreatePermissionCommand, VoidResult> {
+        implements DomainCommandHandler<CreatePermissionCommand, CreatePermissionCommandResult> {
 
     @Autowired
     private EntityRepository entityRepository;
 
 
     @Override
-    public VoidResult execute(CreatePermissionCommand command) {
+    public CreatePermissionCommandResult execute(CreatePermissionCommand command) {
         validateCommand(command);
 
         Permission permission = new Permission();
@@ -32,7 +30,7 @@ public class CreatePermissionCommandHandler
 
         entityRepository.create(permission);
 
-        return VoidResult.INSTANCE;
+        return new CreatePermissionCommandResult(permission);
     }
 
     private void validateCommand(CreatePermissionCommand command) {
@@ -42,7 +40,7 @@ public class CreatePermissionCommandHandler
 
     @Override
     public Class getCommandType() {
-        return null;
+        return CreatePermissionCommand.class;
     }
 
 }

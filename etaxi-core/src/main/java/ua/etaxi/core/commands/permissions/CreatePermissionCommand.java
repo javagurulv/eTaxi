@@ -1,12 +1,12 @@
 package ua.etaxi.core.commands.permissions;
 
 import ua.etaxi.core.commands.DomainCommand;
-import ua.etaxi.core.commands.VoidResult;
 
 /**
  * Created by Viktor on 27/11/2014.
  */
-public class CreatePermissionCommand implements DomainCommand<VoidResult> {
+public class CreatePermissionCommand
+        implements DomainCommand<CreatePermissionCommandResult> {
 
     private String permissionName;
 
