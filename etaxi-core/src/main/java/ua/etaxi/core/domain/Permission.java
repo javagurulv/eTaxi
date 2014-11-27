@@ -39,5 +39,4 @@ public class Permission extends BaseEntity {
         this.permissionName = permissionName;
     }
 
-
 }
